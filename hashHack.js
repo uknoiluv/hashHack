@@ -3,19 +3,17 @@
 var hashHack = function(str, email){
   var hash = CryptoJS.MD5("Message");
   var alphanumericChar = [];
-  alphanumericChar = addChar(alphanumericChar, 97, 122);
-  alphanumericChar = addChar(alphanumericChar, 65, 90);
-  alphanumericChar = addChar(alphanumericChar, 46);
-  alphanumericChar = addChar(alphanumericChar, 48, 57);
-  alphanumericChar = addChar(alphanumericChar, 95);
-  alphanumericChar = addChar(alphanumericChar, 64);
-  alphanumericChar = addChar(alphanumericChar, 43);
+  var charCode = [[97, 122], [65, 90], [46], [48,57], [95], [64], [43]];
+  for(var k = 0; k < charCode.length; k++){
+    alphanumericChar = addChar.apply(null, [alphanumericChar].concat(charCode[k]));
+  }
   var charLen = alphanumericChar.length;
   var count = 0;
+  var strLen = str.length / 32;
   var findChar = function(address, count){
     for(var i = 0; i < charLen; i++){
       for(var j = 0; j < charLen; j++){
-        if(count === 28){
+        if(count === strLen){
           return address;
         }
         var hashInput = address + alphanumericChar[i] + alphanumericChar[j];
