@@ -11,23 +11,17 @@ var hashHack = function(str, email){
   alphanumericChar = addChar(alphanumericChar, 64);
   alphanumericChar = addChar(alphanumericChar, 43);
   var charLen = alphanumericChar.length;
-  // for(var i = 0; i < charLen; i++){
-  //   for(var j = 0; j < charLen; j++){
   var count = 0;
   var findChar = function(address, count){
     for(var i = 0; i < charLen; i++){
       for(var j = 0; j < charLen; j++){
+        if(count === 28){
+          return address;
+        }
         var hashInput = address + alphanumericChar[i] + alphanumericChar[j];
-        // console.log('CryptoJS.MD5(email).toString()', CryptoJS.MD5(email).toString());
-        // console.log('hashInput', hashInput);
-        // console.log('CryptoJS.MD5(hashInput).toString()', CryptoJS.MD5(hashInput).toString());
         var output = CryptoJS.MD5(CryptoJS.MD5(email).toString() + hashInput + CryptoJS.MD5(hashInput).toString()).toString();
-        // console.log(output, str.slice(0, 32));
         if(output === str.slice(32 * count, 32 * (count + 1))){
           return findChar(hashInput, ++count);
-        }else if(count === 28){
-          console.log(hashInput);
-          return hashInput;
         }
       }    
     }  
